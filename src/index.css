@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --orange-glow: 0 0 15px rgba(255, 159, 10, 0.5);
+  --orange-glow-strong: 0 0 25px rgba(255, 159, 10, 0.8);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at top, #121214, #000000);
+  color: white;
+  font-family: 'SF Pro Display', 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-black/40 backdrop-blur-xl rounded-3xl border border-white/10 p-8 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)];
+    transition: all 0.3s ease;
+  }
+  
+  .glass-card-hover {
+    @apply hover:shadow-[0_8px_32px_0_rgba(255,159,10,0.2)] hover:border-brand-orange/30 hover:scale-[1.02] transition-all duration-300;
+  }
+  
+  .section-container {
+    @apply max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-24 md:py-32;
+  }
+  
+  .heading-gradient {
+    @apply bg-gradient-to-r from-brand-orange to-yellow-300 bg-clip-text text-transparent font-bold;
+  }
+  
+  .orange-glow {
+    @apply shadow-[0_0_15px_rgba(255,159,10,0.5)];
+  }
+  
+  .orange-glow-strong {
+    @apply shadow-[0_0_25px_rgba(255,159,10,0.8)];
+  }
+  
+  .apple-button {
+    @apply px-8 py-4 bg-brand-orange/90 backdrop-blur-md text-white font-medium rounded-full hover:bg-brand-orange transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(255,159,10,0.6)] hover:scale-105;
+  }
+  
+  .glass-input {
+    @apply bg-black/30 backdrop-blur-md border border-white/10 rounded-xl px-5 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-orange/50 focus:border-brand-orange/50 w-full;
+  }
+  
+  .pill-tag {
+    @apply px-4 py-2 bg-black/50 backdrop-blur-md border border-white/10 rounded-full text-sm font-medium hover:border-brand-orange/50 hover:shadow-[0_0_15px_rgba(255,159,10,0.4)] transition-all duration-300 hover:scale-105;
+  }
+  
+  .timeline-line {
+    @apply absolute left-0 top-0 h-full w-0.5 bg-gradient-to-b from-brand-orange via-white/20 to-transparent;
+  }
+  
+  .timeline-dot {
+    @apply absolute left-[-8px] w-4 h-4 rounded-full bg-brand-orange shadow-[0_0_15px_rgba(255,159,10,0.7)];
+  }
+}
