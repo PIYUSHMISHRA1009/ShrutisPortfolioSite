@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/Footer';
 import ParallaxScroll from './components/ParallaxScroll';
+import ScrollToTop from './components/ScrollToTop';
+import LoadingAnimation from './components/LoadingAnimation';
 import Hero from './components/sections/Hero';
 import About from './components/sections/About';
 import Portfolio from './components/sections/Portfolio';
@@ -34,7 +36,8 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black dark:bg-gray-900 text-white transition-colors duration-300">
+      <LoadingAnimation />
       <Navbar />
       <ParallaxScroll />
       <main>
@@ -48,6 +51,7 @@ function App() {
         <Contact />
       </main>
       <Footer />
+      <ScrollToTop />
     </div>
   );
 }

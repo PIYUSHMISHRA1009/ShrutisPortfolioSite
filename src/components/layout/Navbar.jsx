@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import ThemeToggle from '../ThemeToggle';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -38,6 +39,8 @@ const Navbar = () => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
+      role="navigation"
+      aria-label="Main navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
@@ -55,10 +58,13 @@ const Navbar = () => {
                   key={link.name}
                   href={link.href}
                   className="text-white hover:text-brand-orange px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  aria-label={`Navigate to ${link.name} section`}
+                  tabIndex="0"
                 >
                   {link.name}
                 </a>
               ))}
+              <ThemeToggle />
             </div>
           </div>
           
