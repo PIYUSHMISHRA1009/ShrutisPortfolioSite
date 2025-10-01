@@ -1,52 +1,92 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 
 const ParallaxScroll = () => {
-  useEffect(() => {
-    // Function to handle smooth parallax scrolling
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const sections = document.querySelectorAll('section');
+  const handleScroll = useCallback(() => {
+    const scrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const scrollProgress = scrollY / (documentHeight - windowHeight);
+    
+    // Update CSS custom property for scroll progress
+    document.documentElement.style.setProperty('--scroll-progress', scrollProgress);
+    
+    const sections = document.querySelectorAll('section');
+    
+    sections.forEach((section) => {
+      const rect = section.getBoundingClientRect();
+      const sectionTop = rect.top + scrollY;
+      const sectionHeight = section.offsetHeight;
       
-      sections.forEach((section) => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        const sectionBottom = sectionTop + sectionHeight;
+      // Check if section is in viewport with some buffer
+      if (rect.top < windowHeight && rect.bottom > 0) {
+        // Calculate how far through the section we are (0 to 1)
+        const sectionProgress = Math.max(0, Math.min(1, 
+          (windowHeight - rect.top) / (windowHeight + sectionHeight)
+        ));
         
-        // Check if section is in viewport
-        if (scrollY > sectionTop - window.innerHeight && scrollY < sectionBottom) {
-          // Calculate how far through the section we are (0 to 1)
-          const scrollProgress = (scrollY - (sectionTop - window.innerHeight)) / 
-                               (sectionHeight + window.innerHeight);
+        // Apply parallax effect to background elements
+        const bgElements = section.querySelectorAll('.bg-parallax');
+        bgElements.forEach((el) => {
+          const speed = parseFloat(el.getAttribute('data-speed')) || 0.3;
+          const yPos = -(sectionProgress * speed * 100);
+          el.style.transform = `translate3d(0, ${yPos}px, 0)`;
+        });
+        
+        // Apply fade-in and slide-up effect to content
+        const contentElements = section.querySelectorAll('.content-parallax');
+        contentElements.forEach((el, index) => {
+          const delay = index * 0.1; // Stagger animation
+          const adjustedProgress = Math.max(0, sectionProgress - delay);
           
-          // Apply parallax effect to section background elements
-          const bgElements = section.querySelectorAll('.bg-parallax');
-          bgElements.forEach((el) => {
-            const speed = el.getAttribute('data-speed') || 0.2;
-            const yPos = -(scrollProgress * speed * 100);
-            el.style.transform = `translate3d(0, ${yPos}px, 0)`;
-          });
-          
-          // Apply fade-in effect to content as it enters viewport
-          const contentElements = section.querySelectorAll('.content-parallax');
-          contentElements.forEach((el) => {
-            if (scrollProgress > 0.1 && scrollProgress < 0.9) {
-              el.style.opacity = Math.min(1, (scrollProgress - 0.1) * 2);
-              el.style.transform = `translate3d(0, ${20 - scrollProgress * 20}px, 0)`;
-            }
-          });
-        }
-      });
+          if (adjustedProgress > 0) {
+            const opacity = Math.min(1, adjustedProgress * 2);
+            const translateY = Math.max(0, 40 - (adjustedProgress * 40));
+            
+            el.style.opacity = opacity;
+            el.style.transform = `translate3d(0, ${translateY}px, 0)`;
+          }
+        });
+        
+        // Apply scale effect to images
+        const imageElements = section.querySelectorAll('.image-parallax');
+        imageElements.forEach((el) => {
+          const scale = 1 + (sectionProgress * 0.1);
+          el.style.transform = `scale(${scale})`;
+        });
+        
+        // Apply rotation effect to rotating elements
+        const rotateElements = section.querySelectorAll('.rotate-parallax');
+        rotateElements.forEach((el) => {
+          const rotation = sectionProgress * 360;
+          el.style.transform = `rotate(${rotation}deg)`;
+        });
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    // Throttle scroll events for better performance
+    let ticking = false;
+    
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     // Add scroll event listener
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     
     // Initial call to set positions
     handleScroll();
     
     // Clean up
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', onScroll);
     };
   }, []);
 

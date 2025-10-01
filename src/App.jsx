@@ -3,6 +3,7 @@ import Navbar from './components/layout/Navbar';
 import Footer from './components/Footer';
 import ParallaxScroll from './components/ParallaxScroll';
 import ScrollToTop from './components/ScrollToTop';
+import ScrollProgressIndicator from './components/ScrollProgressIndicator';
 import LoadingAnimation from './components/LoadingAnimation';
 import Hero from './components/sections/Hero';
 import About from './components/sections/About';
@@ -38,6 +39,7 @@ function App() {
   return (
     <div className="min-h-screen bg-black dark:bg-gray-900 text-white transition-colors duration-300">
       <LoadingAnimation />
+      <ScrollProgressIndicator />
       <Navbar />
       <ParallaxScroll />
       <main>

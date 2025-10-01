@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion';
+import ScrollReveal from '../ScrollReveal';
+import StaggeredReveal from '../StaggeredReveal';
 
 const About = () => {
   const fadeInUp = {
@@ -9,19 +11,13 @@ const About = () => {
   return (
     <section id="about" className="py-24 md:py-32 relative">
       {/* Background accent */}
-      <div className="absolute right-0 top-1/4 w-64 h-64 rounded-full bg-brand-orange/10 blur-[80px] -z-10"></div>
+      <div className="bg-parallax absolute right-0 top-1/4 w-64 h-64 rounded-full bg-brand-orange/10 blur-[80px] -z-10" data-speed="0.2"></div>
       
       <div className="section-container">
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true, margin: "-100px" }}
-          className="mb-12"
-        >
+        <ScrollReveal direction="up" delay={0.1} className="mb-12">
           <h2 className="text-3xl md:text-5xl font-bold mb-4 heading-gradient text-center">About Me</h2>
           <p className="text-gray-400 text-center max-w-2xl mx-auto">My journey from law to personal branding</p>
-        </motion.div>
+        </ScrollReveal>
         
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <motion.div 
